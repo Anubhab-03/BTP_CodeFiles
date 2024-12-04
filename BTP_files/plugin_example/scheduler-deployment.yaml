@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-scheduler
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: second-scheduler
+  template:
+    metadata:
+      labels:
+        component: second-scheduler
+    spec:
+      serviceAccountName: second-scheduler
+      containers:
+      - name: kube-scheduler
+        image: k8s.gcr.io/kube-scheduler:v1.30.0   
+        command:
+        - kube-scheduler
+        - --config=/etc/kubernetes/scheduling-profile/second-scheduler-config.yaml
+        - --leader-elect=false
+        volumeMounts:
+        - name: scheduler-config
+          mountPath: /etc/kubernetes/scheduling-profile
+          readOnly: true
+      volumes:
+      - name: scheduler-config
+        configMap:
+          name: second-scheduler-config
+          items:
+          - key: second-scheduler-config.yaml
+            path: second-scheduler-config.yaml
+

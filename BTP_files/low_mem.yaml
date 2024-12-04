@@ -1,0 +1,51 @@
+
+
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: sleep-app
+#   labels:
+#     app: sleep
+# spec:
+#   schedulerName: custom-scheduler
+#   containers:
+#   - name: sleep-container
+#     image: alpine:latest  # Using the official alpine image for simplicity
+#     resources:
+#       requests:
+#         memory: "100Mi"  # Requesting 100 MiB of memory
+#       limits:
+#         memory: "200Mi"  # Maximum limit of 200 MiB of memory
+#     command:
+#       - sh
+#       - -c
+#       - |
+#         echo "Sleeping for 10 minutes..."
+#         sleep 600  # Sleeps for 600 seconds (10 minutes)
+#   restartPolicy: Never
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: low-memory-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: low-memory-app
+  template:
+    metadata:
+      labels:
+        app: low-memory-app
+    spec:
+      schedulerName: custom-scheduler
+      containers:
+      - name: nginx-low-memory
+        image: nginx:latest
+        resources:
+          requests:
+            memory: "256Mi"
+          limits:
+            memory: "256Mi"
+
+

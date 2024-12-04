@@ -1,0 +1,24 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: high-memory-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: high-memory-app
+  template:
+    metadata:
+      labels:
+        app: high-memory-app
+    spec:
+      schedulerName: custom-scheduler
+      containers:
+      - name: nginx-high-memory
+        image: nginx:latest
+        resources:
+          requests:
+            memory: "1Gi"
+          limits:
+            memory: "1Gi"

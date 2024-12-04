@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-custom-scheduler-deployment
+spec:
+  replicas: 3  # Specify the number of pod replicas you want
+  selector:
+    matchLabels:
+      app: test-app
+      priority: high
+  template:
+    metadata:
+      labels:
+        app: test-app
+        priority: high  # Custom label priority=high
+    spec:
+      schedulerName: custom-scheduler  # Specify the custom scheduler
+      containers:
+      - name: test-container
+        image: nginx:latest  # Use any basic image, like NGINX
+        ports:
+        - containerPort: 80
+
