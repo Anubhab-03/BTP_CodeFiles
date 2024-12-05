@@ -53,6 +53,21 @@ Now run the command :-
 
 Now run *localhost:8080* in your web browser to view the prometheus server.
 
+### Setting up Node exporter
+
+1. Apply the daemonSet file for node-exporter - daemonSet.yaml
+   > kubectl apply -f daemonSet.yaml
+
+2. Check the daemonset deployment
+   > kubectl get daemonset -n monitoring
+
+3. Apply the service file for node-exporter - ds-service.yaml
+   > kubectl apply -f ds-service.yaml
+
+Run *kubectl get pods -o wide -n monitoring* <br>
+We can see that three node-exporter pods are running on each of the nodes.<br> 
+These node exporters help in scraping the CPU,memory and other hardware related metrics for each of the nodes
+
 ### Run the custom-scheduler I
 1. Apply the high memory pod.
    > kubectl apply -f high_mem.yaml
